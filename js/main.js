@@ -1,8 +1,10 @@
 let app = new Vue({
     el: '#app',
     data: {
+        brand: "Vue Mastery",
         product: "Socks",
         description: "A pair of warm, fuzzy socks",
+        selectedVariant: 0,
         image: "./assets/vmSocks-blue-onWhite.jpg",
         altText: "A pair of socks",
         inStock: false,
@@ -28,7 +30,10 @@ let app = new Vue({
         updateProduct(variantImage) {
         this.image = variantImage
         },
+    },
+    computed: {
+        title() {
+            return this.brand + ' ' + this.product;
+        }
     }
-    
-     
- }) 
+}) 
