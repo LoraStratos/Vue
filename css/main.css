@@ -6,7 +6,7 @@ body {
 
 .nav-bar {
     background: linear-gradient(-90deg, #84CF6A, #16C0B0);
-    height: 60px;
+    height: 75px;
     margin-bottom: 15px;
 }
 
@@ -40,7 +40,9 @@ img {
 }
 
 .cart {
+    background-color: white;
     margin-right: 25px;
+    margin-top: 5px;
     float: right;
     border: 1px solid #d8d8d8;
     padding: 5px 20px;

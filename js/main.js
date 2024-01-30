@@ -10,25 +10,25 @@ Vue.component('product-tabs', {
                 @click="selectedTab = tab"
             >{{ tab }}</span>
         </ul>
-        <div v-show="selectedTab === 'Reviews'">
-            <p v-if="!reviews.length">There are no reviews yet.</p>
+        <div v-show="selectedTab === 'Отзывы'">
+            <p v-if="!reviews.length">Отзывов нет</p>
             <ul>
                 <li v-for="review in reviews">
                 <p>{{ review.name }}</p>
-                <p>Rating: {{ review.rating }}</p>
+                <p>Рейтинг: {{ review.rating }}</p>
                 <p>{{ review.review }}</p>
                 </li>
             </ul>
         </div>
-        <div v-show="selectedTab === 'Make a Review'">
+        <div v-show="selectedTab === 'Оставить отзыв'">
             <product-review  @submit-review="addReview"/>
        </div>
     </div>
   `,
     data() {
         return {
-            tabs: ['Reviews', 'Make a Review'],
-            selectedTab: 'Reviews',
+            tabs: ['Отзывы', 'Оставить отзыв'],
+            selectedTab: 'Отзывы',
             reviews: []
         };
     },
@@ -43,21 +43,21 @@ Vue.component('product-review', {
     template: `
         <form class="review-form" @submit.prevent="onSubmit">
             <p v-if="errors.length">
-                <b>Please correct the following error(s):</b>
+                <b>Пожалуйста исправьте ошибки:</b>
                 <ul>
                 <li v-for="error in errors">{{ error }}</li>
                 </ul>
             </p>    
             <p>
-                <label for="name">Name:</label>
-                <input id="name" v-model="name" placeholder="name">
+                <label for="name">Имя:</label>
+                <input id="name" v-model="name" placeholder="Имя">
             </p>
             <p>
-                <label for="review">Review:</label>
-                <textarea id="review" v-model="review"></textarea>
+                <label for="review">Отзыв:</label>
+                <textarea id="review" v-model="Отзыв"></textarea>
             </p>
             <p>
-                <label for="rating">Rating:</label>
+                <label for="rating">Рейтинг:</label>
                 <select id="rating" v-model.number="rating">
                     <option>5</option>
                     <option>4</option>
@@ -67,7 +67,7 @@ Vue.component('product-review', {
                 </select>
             </p>
             <p>
-                <input type="submit" value="Submit"> 
+                <input type="submit" value="Оставить отзыв"> 
             </p>
             
 
@@ -95,9 +95,9 @@ Vue.component('product-review', {
                 this.review = null;
                 this.rating = null;
             } else {
-                if(!this.name) this.errors.push("Name required.");
-                if(!this.review) this.errors.push("Review required.");
-                if(!this.rating) this.errors.push("Rating required.");
+                if(!this.name) this.errors.push("Имя обязательно.");
+                if(!this.review) this.errors.push("Отзыв обязателен.");
+                if(!this.rating) this.errors.push("Рейтинг обязателен.");
             }
         },         
         addReview(productReview) {
@@ -126,8 +126,8 @@ Vue.component('product', {
         </div>
         <div class="product-info">
             <h1>{{ title }}</h1>
-            <p v-if="inStock">In stock</p>
-            <p v-else :class="{ outOfStock: !inStock }">Out of Stock</p>
+            <p v-if="inStock">В наличии</p>
+            <p v-else :class="{ outOfStock: !inStock }">Нет в наличии</p>
             <tabs-information :shipping="shipping" :details=" details"></tabs-information>
             <div
                     class="color-box"
@@ -139,9 +139,9 @@ Vue.component('product', {
             <button
                     v-on:click="addToCart"
                     :disabled="!inStock"
-                    :class="{ disabledButton: !inStock }">Add to cart
+                    :class="{ disabledButton: !inStock }">Добавить в корзину
             </button>
-            <button v-on:click="remoteToCart" class="remoteToCart">Remote one</button>
+            <button v-on:click="remoteToCart" class="remoteToCart">Убрать из корзины</button>
             
         </div>
         <product-tabs :reviews="reviews"></product-tabs>
@@ -149,12 +149,12 @@ Vue.component('product', {
     `,
     data() {
         return {
-            product: "Socks",
+            product: "Носки",
             brand: 'Vue Mastery',
             reviews: [],
             selectedVariant: 0,
-            altText: "A pair of socks",
-            details: ['80% cotton', '20% polyester', 'Gender-neutral'],
+            altText: "Пара носков",
+            details: ['80% хлопок', '20% полиэстер', 'Гендерно-нейтральный'],
             variants: [
                 {
                     variantId: 2234,
@@ -198,7 +198,7 @@ Vue.component('product', {
         },
         shipping() {
             if (this.premium) {
-                return "Free";
+                return "Бесплатно";
             } else {
                 return 2.99;
             }
@@ -230,10 +230,10 @@ Vue.component('tabs-information', {
                 @click="selectedTab = tab"
           >{{ tab }}</span>
         </ul>
-        <div v-show="selectedTab === 'Shipping'">
+        <div v-show="selectedTab === 'Доставка'">
           <p>{{ shipping }}</p>
         </div>
-        <div v-show="selectedTab === 'Details'">
+        <div v-show="selectedTab === 'Детали'">
           <ul>
             <li v-for="detail in details">{{ detail }}</li>
           </ul>
@@ -243,8 +243,8 @@ Vue.component('tabs-information', {
     `,
     data() {
         return {
-            tabs: ['Shipping', 'Details'],
-            selectedTab: 'Shipping'
+            tabs: ['Доставка', 'Детали'],
+            selectedTab: 'Доставка'
         }
     }
 });
