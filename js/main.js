@@ -134,7 +134,7 @@ Vue.component('product', {
                     v-for="(variant, index) in variants"
                     :key="variant.variantId"
                     :style="{ backgroundColor:variant.variantColor }"
-                    @mouseover="updateProduct(index)"></div>
+                    @click="updateProduct(index)"></div>
             
             <button
                     v-on:click="addToCart"
