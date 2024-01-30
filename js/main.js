@@ -1,3 +1,79 @@
+Vue.component('product-review', {
+    template: `
+        <form class="review-form" @submit.prevent="onSubmit">
+            <p v-if="errors.length">
+                <b>Please correct the following error(s):</b>
+                <ul>
+                <li v-for="error in errors">{{ error }}</li>
+                </ul>
+            </p>    
+            <p>
+                <label for="name">Name:</label>
+                <input id="name" v-model="name" placeholder="name">
+            </p>
+            <p>
+                <label for="review">Review:</label>
+                <textarea id="review" v-model="review"></textarea>
+            </p>
+            <p>
+                <label for="rating">Rating:</label>
+                <select id="rating" v-model.number="rating">
+                    <option>5</option>
+                    <option>4</option>
+                    <option>3</option>
+                    <option>2</option>
+                    <option>1</option>
+                </select>
+            </p>
+            <p>
+                <label for="recommend">Would you recommend this product?</label><br>
+                <input type="radio" id="recommend-yes" value="yes" v-model="recommend"> <label for="recommend-yes">Yes</label>
+                <input type="radio" id="recommend-no" value="no" v-model="recommend"> <label for="recommend-no">No</label>
+            </p>
+            <p>
+                <input type="submit" value="Submit"> 
+            </p>
+            
+
+        </form>
+    `,
+    data() {
+        return {
+            name: null,
+            review: null,
+            rating: null,
+            errors: [],
+        }
+    },
+    methods:{
+        onSubmit() {
+                this.errors = [];
+                if(!this.name) this.errors.push("Name required.")
+                if(!this.review) this.errors.push("Review required.")
+                if(!this.rating) this.errors.push("Rating required.")
+                if (!this.recommend) this.errors.push("Recommendation required.");
+
+                if (this.errors.length === 0) {
+                    let productReview = {
+                        name: this.name,
+                        review: this.review,
+                        rating: this.rating,
+                        recommend: this.recommend
+                    }
+                }
+                this.$emit('review-submitted', productReview)
+                this.name = null
+                this.review = null
+                this.rating = null
+                this.recommend = null;
+        },         
+        addReview(productReview) {
+            this.reviews.push(productReview)
+        },
+         
+    },
+})
+
 Vue.component('product', {
     props: {
         premium: {
@@ -35,6 +111,18 @@ Vue.component('product', {
                     :class="{ disabledButton: !inStock }">Add to cart
             </button>
             <button v-on:click="remoteToCart" class="remoteToCart">Remote one</button>
+            <div>
+                <h2>Reviews</h2>
+                <p v-if="!reviews.length">There are no reviews yet.</p>
+                <ul>
+                    <li v-for="review in reviews">
+                    <p>{{ review.name }}</p>
+                    <p>Rating: {{ review.rating }}</p>
+                    <p>{{ review.review }}</p>
+                    </li>
+                </ul>
+            </div>
+            <product-review @review-submitted="addReview"></product-review>
         </div>
     </div>
     `,
@@ -42,6 +130,7 @@ Vue.component('product', {
         return {
             product: "Socks",
             brand: 'Vue Mastery',
+            reviews: [],
             selectedVariant: 0,
             altText: "A pair of socks",
             details: ['80% cotton', '20% polyester', 'Gender-neutral'],
@@ -68,7 +157,7 @@ Vue.component('product', {
         },
         remoteToCart() {
             if (this.cart.length > 0) {
-                this.$emit('remote-from-cart', this.cart[this.cart.length - 1]);
+                this.$emit('remote-to-cart', this.cart[this.cart.length - 1]);
             }
         },
         updateProduct(index) {
@@ -107,7 +196,7 @@ let app = new Vue({
         updateCart(id) {
             this.cart.push(id);
         },
-        remoteFromCart(id) {
+        remoteToCart(id) {
             let index = this.cart.indexOf(id);
             if (index !== -1) {
                 this.cart.splice(index, 1);
