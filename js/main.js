@@ -129,13 +129,20 @@ Vue.component('product', {
             <p v-if="inStock">В наличии</p>
             <p v-else :class="{ outOfStock: !inStock }">Нет в наличии</p>
             <tabs-information :shipping="shipping" :details=" details"></tabs-information>
+
+            <button :class="{ disabledButton: !noSizeS }">S</button>
+            <button :class="{ disabledButton: !noSizeM }">M</button>
+            <button :class="{ disabledButton: !noSizeL }">L</button>
+            <button :class="{ disabledButton: !noSizeXl }">XL</button>
+            <button :class="{ disabledButton: !noSizeXXl }">XXL</button>
+            <button :class="{ disabledButton: !noSizeXXXl }">XXXL</button>
+
             <div
                     class="color-box"
                     v-for="(variant, index) in variants"
                     :key="variant.variantId"
                     :style="{ backgroundColor:variant.variantColor }"
                     @click="updateProduct(index)"></div>
-            
             <button
                     v-on:click="addToCart"
                     :disabled="!inStock"
@@ -160,7 +167,13 @@ Vue.component('product', {
                     variantId: 2234,
                     variantColor: 'green',
                     variantImage: "./assets/vmSocks-green-onWhite.jpg",
-                    variantQuantity: 10
+                    variantQuantity: 10,
+                    sizeS: 0,
+                    sizeM: 40,
+                    sizeL: 20,
+                    sizeXl: 30,
+                    sizeXXl: 0,
+                    sizeXXXl: 10,
                 },
                 {
                     variantId: 2235,
@@ -202,6 +215,24 @@ Vue.component('product', {
             } else {
                 return 2.99;
             }
+        },
+        noSizeS(){
+            return this.variants[this.selectedVariant].sizeS;
+        },
+        noSizeM(){
+            return this.variants[this.selectedVariant].sizeM;
+        },
+        noSizeL(){
+            return this.variants[this.selectedVariant].sizeL;
+        },
+        noSizeXl(){
+            return this.variants[this.selectedVariant].sizeXl;
+        },
+        noSizeXXl(){
+            return this.variants[this.selectedVariant].sizeXXl;
+        },
+        noSizeXXXl(){
+            return this.variants[this.selectedVariant].sizeXXXl;
         },
         mounted() {
             eventBus.$on('review-submitted', productReview => {
