@@ -54,7 +54,7 @@ Vue.component('product-review', {
             </p>
             <p>
                 <label for="review">Отзыв:</label>
-                <textarea id="review" v-model="Отзыв"></textarea>
+                <textarea id="review" v-model="review"></textarea>
             </p>
             <p>
                 <label for="rating">Рейтинг:</label>
